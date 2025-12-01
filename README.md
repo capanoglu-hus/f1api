@@ -3,8 +3,14 @@
 -> .net core 10
 
 -> Repository Pattern 
+
+
 -> DTOs 
+
+
 -> Entity Framework
+
+
 
 CRUD PROCESS
 
