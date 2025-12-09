@@ -11,8 +11,8 @@ using f1api.Data;
 namespace f1api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251130233402_Initial")]
-    partial class Initial
+    [Migration("20251209130549_AddTeamAndRelations")]
+    partial class AddTeamAndRelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,13 +40,53 @@ namespace f1api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Team")
+                    b.Property<int>("RacingNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Drivers");
+                });
+
+            modelBuilder.Entity("f1api.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Principal")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Drivers");
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("f1api.Models.Driver", b =>
+                {
+                    b.HasOne("f1api.Models.Team", "Team")
+                        .WithMany("Drivers")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("f1api.Models.Team", b =>
+                {
+                    b.Navigation("Drivers");
                 });
 #pragma warning restore 612, 618
         }

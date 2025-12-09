@@ -7,7 +7,7 @@ using Microsoft.OpenApi;
 
 namespace f1api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/driver/[controller]")]
     [ApiController]
     public class DriversController(IDriverService service) : ControllerBase
     {

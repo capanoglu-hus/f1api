@@ -7,15 +7,12 @@ namespace f1api.Services
 {
     public class DriverService(AppDbContext context) : IDriverService
     {
-
-        
-
         public async Task<DriverResponse> AddDriverAsync(CreateDriverRequest driver)
         {
             var newDriver = new Driver
             {
                 Name = driver.Name,
-                Team = driver.Team,
+                RacingNumber = driver.RacingNumber,
                 Description = driver.Description
             };
 
@@ -25,7 +22,7 @@ namespace f1api.Services
             {
                 Id = newDriver.Id,
                 Name = newDriver.Name,
-                Team = newDriver.Team,
+                RacingNumber = newDriver.RacingNumber,
                 Description = newDriver.Description
             };
         }
@@ -36,7 +33,8 @@ namespace f1api.Services
             {
                 Id = c.Id,
                 Name = c.Name,
-                Team = c.Team,
+                Team = c.Team.Name.ToString(),
+                RacingNumber = c.RacingNumber,
                 Description = c.Description
             }).ToListAsync();
 
@@ -48,7 +46,8 @@ namespace f1api.Services
                 {   
                     Id = a.Id,
                     Name = a.Name,
-                    Team = a.Team,
+                    Team = a.Team.Name.ToString(),
+                    RacingNumber = a.RacingNumber,
                     Description = a.Description
                 })
                 .FirstOrDefaultAsync();
@@ -63,8 +62,9 @@ namespace f1api.Services
                 return false;
 
             existingDriver.Name = driver.Name;
-            existingDriver.Team = driver.Team;
+           // existingDriver.Team = driver.Team;
             existingDriver.Description = driver.Description;
+            existingDriver.RacingNumber = driver.RacingNumber;
 
             await context.SaveChangesAsync();
             return true;
