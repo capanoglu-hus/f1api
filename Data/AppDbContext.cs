@@ -10,6 +10,7 @@ namespace f1api.Data
         public DbSet<Team> Teams => Set<Team>();
 
         public DbSet<Race> Races => Set<Race>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
