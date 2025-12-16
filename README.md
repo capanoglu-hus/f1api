@@ -1,17 +1,35 @@
-# f1api
+# 🏎️ F1API – Formula 1 Management API
 
--> .net core 10
+F1API, **ASP.NET Core Web API** kullanılarak geliştirilmiş bir RESTful servistir.  
+Amaç; Formula 1 yarışları, sürücüler ve kullanıcı yönetimini JWT tabanlı authentication ve role-based authorization ile yönetmektir.
 
--> Repository Pattern 
+---
 
+## 🚀 Kullanılan Teknolojiler
 
--> DTOs, Controller,Service
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server
+- JWT Authentication
+- Role-Based Authorization (Admin / User)
+- FluentValidation
+- OpenAPI (Swagger)
+- Service & DTO Pattern
 
+---
 
--> Entity Framework
+## 🔐 Authentication & Authorization
 
+- JWT Bearer Token kullanılır
+- Kullanıcı rolleri:
+  - `User`
+  - `Admin`
+- Bazı endpoint’ler yalnızca **Admin** rolüne açıktır
 
--> Validator
+Authorization Attribute:
+```csharp
+[Authorize]
+[Authorize(Roles = "Admin")]
 
 
 
