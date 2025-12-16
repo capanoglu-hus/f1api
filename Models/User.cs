@@ -14,11 +14,11 @@ namespace f1api.Models
 
         public string PasswordHash { get; set; }
 
-      
-
         public DateTime? PasswordChangeDate { get; set; }
 
         public string? RefreshToken { get; set; }
+
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         public UserRole Role { get; set; } = UserRole.User;
 

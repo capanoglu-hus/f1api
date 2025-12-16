@@ -10,10 +10,10 @@ namespace f1api.Controllers
     public class AuthController(IAuthService service) : ControllerBase
     {
         [HttpPost("login")]
-        public  async Task<ActionResult<string>> Login(LoginUser loginUser)
+        public  async Task<ActionResult<LoginResponse>> Login(LoginUser loginUser)
         {
-            var token = await service.Login(loginUser);
-            return token is null ? BadRequest("Invalid email or password") : Ok(token);
+            var result = await service.Login(loginUser);
+            return result is null ? BadRequest("Invalid email or password") : Ok(result);
         }
 
         [HttpPost("register")]
@@ -21,6 +21,26 @@ namespace f1api.Controllers
         {
             var user = await service.Register(register);
             return user is null ? BadRequest("Email alreadty exists") : Ok(user);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<LoginResponse>> RefreshToken(RefreshTokenRequest request)
+        {
+            var user = await service.RefreshToken(request);
+            if( user is null || user.AccessToken is null || user.RefreshToken is null)
+                return BadRequest("Invalid token or user id");
+            return Ok(user);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult> ResetPassword(ResetPassword reset)
+        {
+            var user = await service.ResetPassword(reset);
+            if (!user)
+            {
+                return BadRequest("ıt ıs wrong ");
+            }
+            return NoContent();
         }
     }
 }

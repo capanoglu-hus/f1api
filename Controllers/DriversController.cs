@@ -1,12 +1,14 @@
 ﻿using f1api.Dtos;
 using f1api.Models;
 using f1api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi;
 
 namespace f1api.Controllers
 {
+    [Authorize]
     [Route("api/driver/[controller]")]
     [ApiController]
     public class DriversController(IDriverService service) : ControllerBase
@@ -31,7 +33,7 @@ namespace f1api.Controllers
              */
 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<DriverResponse>> AddDriver(CreateDriverRequest driver)
         {
@@ -39,7 +41,7 @@ namespace f1api.Controllers
             return CreatedAtAction(nameof(GetDriver), new { id = createdDriver.Id }, createdDriver);
 
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("{id}")]
         public async Task<ActionResult> UpdateDriver(int id , UpdateDriverRequest driver)
         {
@@ -47,6 +49,7 @@ namespace f1api.Controllers
             return updatedDriver ? NoContent() : NotFound("Driver was not found");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDriver(int id)
         {

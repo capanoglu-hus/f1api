@@ -7,8 +7,11 @@ namespace f1api.Services
     {
         Task<User?> Register(RegisterUser register);
 
-        Task<string> Login (LoginUser login);
+        Task<LoginResponse> Login (LoginUser login);
 
-      
+        Task<LoginResponse> RefreshToken(RefreshTokenRequest request);
+
+        Task<bool> ResetPassword(ResetPassword password);
+
     }
 }
