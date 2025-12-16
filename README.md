@@ -27,20 +27,17 @@ Amaç; Formula 1 yarışları, sürücüler ve kullanıcı yönetimini JWT taban
 - Bazı endpoint’ler yalnızca **Admin** rolüne açıktır
 
 Authorization Attribute:
-```csharp
-[Authorize]
-[Authorize(Roles = "Admin")]
+Authorize
+Authorize(Roles = "Admin")
 
 
 
-CRUD PROCESS
-
-<img width="356" height="207" alt="Ekran görüntüsü 2025-12-01 105900" src="https://github.com/user-attachments/assets/0bebe2f5-d0ae-4a22-a044-2fa6d189e2da" />
+<img width="665" height="185" alt="races" src="https://github.com/user-attachments/assets/f7d885c6-a359-4a55-8d5c-451b1335bb5c" />
 
 
-<img width="665" height="185" alt="races" src="https://github.com/user-attachments/assets/ca1a675d-5d44-4f43-9803-9d7442ca4f48" />
 
+<img width="632" height="236" alt="teams" src="https://github.com/user-attachments/assets/1ba418ea-43e2-4c68-a697-8ce52c1dcef3" />
 
-<img width="632" height="236" alt="teams" src="https://github.com/user-attachments/assets/d804b745-b8f4-4f27-864e-5e4062deac9c" />
+<img width="356" height="207" alt="Ekran görüntüsü 2025-12-01 105900" src="https://github.com/user-attachments/assets/7be71c48-87aa-4f6c-b1d9-69812d9905a7" />
 
 
