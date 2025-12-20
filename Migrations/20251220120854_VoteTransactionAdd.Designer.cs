@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using f1api.Data;
 
@@ -11,9 +12,11 @@ using f1api.Data;
 namespace f1api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251220120854_VoteTransactionAdd")]
+    partial class VoteTransactionAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,33 +52,6 @@ namespace f1api.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("Drivers");
-                });
-
-            modelBuilder.Entity("f1api.Models.DriverFanRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TotalScore")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalVotes")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
-
-                    b.ToTable("DriverFanRatings");
                 });
 
             modelBuilder.Entity("f1api.Models.Race", b =>
@@ -154,7 +130,7 @@ namespace f1api.Migrations
 
                     b.HasIndex("WinnerId");
 
-                    b.ToTable("RacePredictions");
+                    b.ToTable("RacePrediction");
                 });
 
             modelBuilder.Entity("f1api.Models.Team", b =>
@@ -176,30 +152,6 @@ namespace f1api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teams");
-                });
-
-            modelBuilder.Entity("f1api.Models.TeamFanRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("RatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalVotes")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("TeamFanRatings");
                 });
 
             modelBuilder.Entity("f1api.Models.User", b =>
@@ -276,67 +228,7 @@ namespace f1api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDriverVotes");
-                });
-
-            modelBuilder.Entity("f1api.Models.UserNftReward", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("AwardedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NFTHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NftImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RaceId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RaceId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserNftRewards");
-                });
-
-            modelBuilder.Entity("f1api.Models.UserTeamVote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("VoteDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTeamVotes");
+                    b.ToTable("UserDriverVote");
                 });
 
             modelBuilder.Entity("f1api.Models.Driver", b =>
@@ -347,17 +239,6 @@ namespace f1api.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("f1api.Models.DriverFanRating", b =>
-                {
-                    b.HasOne("f1api.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("f1api.Models.Race", b =>
@@ -427,17 +308,6 @@ namespace f1api.Migrations
                     b.Navigation("Winner");
                 });
 
-            modelBuilder.Entity("f1api.Models.TeamFanRating", b =>
-                {
-                    b.HasOne("f1api.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("f1api.Models.UserDriverVote", b =>
                 {
                     b.HasOne("f1api.Models.Driver", "FirstDriver")
@@ -469,44 +339,6 @@ namespace f1api.Migrations
                     b.Navigation("SecondDriver");
 
                     b.Navigation("ThirdDriver");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("f1api.Models.UserNftReward", b =>
-                {
-                    b.HasOne("f1api.Models.Race", "Race")
-                        .WithMany()
-                        .HasForeignKey("RaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("f1api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Race");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("f1api.Models.UserTeamVote", b =>
-                {
-                    b.HasOne("f1api.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("f1api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });

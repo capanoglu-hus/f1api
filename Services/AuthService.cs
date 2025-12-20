@@ -30,7 +30,8 @@ namespace f1api.Services
             {
                 Name = register.Name,
                 Email = register.Email,
-               
+                Id = Guid.NewGuid()
+
             };
 
             var hashPassword = new PasswordHasher<User>()

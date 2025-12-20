@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace f1api.Controllers
 {
-    
+    [Authorize]
     [Route("api/team/[controller]")]
     [ApiController]
     public class TeamsController(ITeamService service) : ControllerBase
     {
-        [Authorize]
+        
         [HttpGet]
         public async Task<ActionResult<List<TeamResponse>>> GetTeams()
             => Ok(await service.GetAllTeamAsync());
 
-        [Authorize]
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamResponse>> GetTeam(int id)
         {

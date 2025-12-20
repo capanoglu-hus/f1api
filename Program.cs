@@ -36,6 +36,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<f1api.Services.IDriverService, f1api.Services.DriverService>();
 builder.Services.AddScoped<f1api.Services.IRaceService, f1api.Services.RaceService>();
 builder.Services.AddScoped<f1api.Services.IAuthService, f1api.Services.AuthService>();
+builder.Services.AddScoped<f1api.Services.IVoteService, f1api.Services.VoteService>();
+builder.Services.AddScoped<f1api.Services.ITeamService, f1api.Services.TeamService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,8 +48,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

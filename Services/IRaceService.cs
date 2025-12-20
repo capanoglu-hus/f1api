@@ -12,7 +12,7 @@ namespace f1api.Services
 
         Task<bool> UpdateRaceResult(int id, UpdateRaceRequest updateRace);
 
-
+        Task<bool> FinishRace(int id);
 
     }
 }

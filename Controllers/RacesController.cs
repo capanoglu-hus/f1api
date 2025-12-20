@@ -21,7 +21,7 @@ namespace f1api.Controllers
             var race = await service.GetRaceById(id);
             return race is null ? NotFound("Race was not found") : Ok(race);
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<RaceResponse>> CreateRace(CreateRaceRequest createRace)
         {
@@ -33,6 +33,14 @@ namespace f1api.Controllers
         public async Task<ActionResult> UpdateRace (int id, UpdateRaceRequest updateRace)
         {
             var updatedRace = await service.UpdateRaceResult(id, updateRace);
+            return updatedRace ? NoContent() : NotFound("Update not success");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("finishRace{id}")]
+        public async Task<ActionResult> FinishRace(int id)
+        {
+            var updatedRace = await service.FinishRace(id);
             return updatedRace ? NoContent() : NotFound("Update not success");
         }
     }

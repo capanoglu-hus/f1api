@@ -14,7 +14,6 @@ namespace f1api.Controllers
     public class DriversController(IDriverService service) : ControllerBase
     {
 
-
         [HttpGet]
         public async Task<ActionResult<List<DriverResponse>>> GetDrivers()
             => Ok(await service.GetAllDriverAsync());

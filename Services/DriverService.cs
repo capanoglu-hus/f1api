@@ -72,7 +72,8 @@ namespace f1api.Services
 
         public async Task<bool> DeleteDriverAsync(int id)
         {
-            var existingDriver = context.Drivers.Find(id);
+            var existingDriver = await context.Drivers.FindAsync(id);
+
 
             if (existingDriver is null)
                 return false;
