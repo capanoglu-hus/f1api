@@ -1,43 +1,94 @@
-# 🏎️ F1API – Formula 1 Management API
+# 🏎️ F1 Taraftar & Tahmin API'si (F1 Fan & Prediction API)
 
-F1API, **ASP.NET Core Web API** kullanılarak geliştirilmiş bir RESTful servistir.  
-Amaç; Formula 1 yarışları, sürücüler ve kullanıcı yönetimini JWT tabanlı authentication ve role-based authorization ile yönetmektir.
+> Formula 1 hayranlarının sürücüleri oylayabildiği, yarış podyumu tahminleri yapabildiği ve doğru tahminler karşılığında NFT ödülleri kazanabildiği kapsamlı bir ASP.NET Core Web API projesi.
 
----
+Bu proje, bir F1 sezonunu simüle ederek kullanıcıların yarışlarla etkileşime girmesini sağlar. Kimlik doğrulama, gelişmiş veri doğrulama kuralları ve arka plan işlemleri (background tasks) gibi modern backend tekniklerini içerir.
 
-## 🚀 Kullanılan Teknolojiler
+## 🚀 Özellikler
 
-- ASP.NET Core Web API
-- Entity Framework Core
-- SQL Server
-- JWT Authentication
-- Role-Based Authorization (Admin / User)
-- FluentValidation
-- OpenAPI (Swagger)
-- Service & DTO Pattern
+### 🔐 Kimlik Doğrulama ve Güvenlik
+* **JWT (JSON Web Token):** Güvenli giriş ve kayıt işlemleri.
+* **Refresh Token Mekanizması:** Kullanıcı oturumu süresi dolduğunda, tekrar giriş yapmaya gerek kalmadan sessizce yeni token alma özelliği.
+* **Rol Bazlı Yetkilendirme (RBAC):** Yarışları sonuçlandırma ve ödül dağıtma gibi işlemler sadece **Admin** yetkisine sahip kullanıcılar tarafından yapılabilir.
 
----
+### 🏁 Yarış ve Tahmin Sistemi
+* **Yarış Yönetimi:** Adminler yarış takvimini yönetebilir.
+* **Podyum Tahmini:** Kullanıcılar belirli bir yarış için **1., 2. ve 3.** sıradaki pilotları tahmin edebilir.
+* **Akıllı Validasyon (FluentValidation):**
+    * Bir kullanıcının aynı tahmin içinde aynı pilotu birden fazla kez seçmesini engelleyen özel mantık.
+    * Yarış başladıktan sonra tahmin yapılmasını engelleyen zaman kısıtlaması kontrolleri.
 
-## 🔐 Authentication & Authorization
+### 🏆 Ödül Sistemi ve İş Mantığı
+* **Otomatik Puanlama:** Admin yarışı sonlandırdığında sistem gerçek sonuçlarla tahminleri karşılaştırır.
+* **Kazanan Ayrıştırma:** Sadece ilk 3'ü **tam sırasıyla** bilen kullanıcılar veritabanı seviyesinde optimize edilmiş LINQ sorguları ile çekilir.
+* **NFT Ödül Kuyruğu:** Kazananlar belirlenir ve ödül tablosuna "Beklemede (Pending)" olarak eklenir.
+* **Asenkron İşleme (Background Processing):** Blokzincir (Blockchain) gibi yavaş işlemlerde API'nin kilitlenmemesi için `Task.Run` ve Background Service mantığı kullanılarak ödül dağıtımı arka planda (Fire-and-Forget) yapılır.
 
-- JWT Bearer Token kullanılır
-- Kullanıcı rolleri:
-  - `User`
-  - `Admin`
-- Bazı endpoint’ler yalnızca **Admin** rolüne açıktır
+## 🛠️ Teknoloji Yığını
 
-Authorization Attribute:
-Authorize
-Authorize(Roles = "Admin")
+* **Framework:** .NET 8 (ASP.NET Core Web API)
+* **Veritabanı:** MS SQL Server
+* **ORM:** Entity Framework Core (Code First)
+* **Validasyon:** FluentValidation
+* **Kimlik Doğrulama:** Microsoft.Identity / JWT Bearer
+* **Dokümantasyon:** Scalar / Swagger UI
 
+## 🏗️ Mimari ve Tasarım
 
+Proje, sorumlulukların ayrılması (SoC) ilkesine dayanan **Clean Architecture** prensiplerini takip eder:
+* **Controllers:** Sadece HTTP isteklerini karşılar.
+* **Services:** Tüm iş mantığını (Business Logic), kuralları ve hesaplamaları içerir.
+* **Repositories/Data:** Veritabanı işlemlerini yönetir.
+* **DTOs:** Veri transferi için kullanılan modellerdir, veritabanı varlıklarını (Entity) dış dünyadan gizler.
 
-<img width="665" height="185" alt="races" src="https://github.com/user-attachments/assets/f7d885c6-a359-4a55-8d5c-451b1335bb5c" />
+## ⚡ Kurulum ve Başlangıç
 
+1.  **Projeyi Klonlayın**
+    ```bash
+    git clone [https://github.com/capanoglu-hus/f1api.git](https://github.com/capanoglu-hus/f1api.git)
+    ```
 
+2.  **Veritabanı Ayarları**
+    `appsettings.json` dosyasındaki "DefaultConnection" alanına kendi SQL Server bağlantı cümlenizi yazın.
+    ```json
+    "ConnectionStrings": {
+      "DefaultConnection": "Server=...;Database=F1ApiDb;..."
+    }
+    ```
 
-<img width="632" height="236" alt="teams" src="https://github.com/user-attachments/assets/1ba418ea-43e2-4c68-a697-8ce52c1dcef3" />
+3.  **Migration İşlemleri**
+    Veritabanını oluşturmak için terminalde şu komutu çalıştırın:
+    ```bash
+    dotnet ef database update
+    ```
 
-<img width="356" height="207" alt="Ekran görüntüsü 2025-12-01 105900" src="https://github.com/user-attachments/assets/7be71c48-87aa-4f6c-b1d9-69812d9905a7" />
+4.  **Projeyi Ayağa Kaldırın**
+    ```bash
+    dotnet run
+    ```
 
+## 🔌 Önemli API Uçları (Endpoints)
 
+| Metot | Endpoint | Açıklama | Yetki |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Giriş yap, Access ve Refresh Token al | ✅ (User) |
+| `POST` | `/api/prediction` | Yarış için ilk 3 tahminini gönder | ✅ (User) |
+| `POST` | `/api/vote/driver` | Favori sürücüye oy ver | ✅ (User) |
+| `POST` | `/api/race/finish-race` | **(Admin)** Yarışı bitir, sonuçları hesapla ve ödül dağıtımını başlat | ✅ (Admin) |
+
+## 🗺️ Yol Haritası (Roadmap)
+
+- [x] Backend Mimarisi ve Veritabanı Kurulumu
+- [x] Oylama ve Tahmin Mantığı (Validasyonlar Dahil)
+- [x] JWT ve Refresh Token Entegrasyonu
+- [x] Kazanan Hesaplama Algoritması
+- [ ] **Frontend Entegrasyonu (React + TypeScript + Vite)** *[Geliştiriliyor]*
+- [ ] Web3 / Akıllı Sözleşme Entegrasyonu (Gerçek NFT Mintleme)
+
+## 🤝 Katkıda Bulunma
+
+Projeye katkıda bulunmak isterseniz Fork yapıp Pull Request gönderebilirsiniz.
+
+## 📄 Lisans
+
+[MIT](LICENSE)
