@@ -85,10 +85,3 @@ Proje, sorumlulukların ayrılması (SoC) ilkesine dayanan **Clean Architecture*
 - [ ] **Frontend Entegrasyonu (React + TypeScript + Vite)** *[Geliştiriliyor]*
 - [ ] Web3 / Akıllı Sözleşme Entegrasyonu (Gerçek NFT Mintleme)
 
-## 🤝 Katkıda Bulunma
-
-Projeye katkıda bulunmak isterseniz Fork yapıp Pull Request gönderebilirsiniz.
-
-## 📄 Lisans
-
-[MIT](LICENSE)
