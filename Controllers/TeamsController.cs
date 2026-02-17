@@ -24,7 +24,7 @@ namespace f1api.Controllers
             return team is null ? NotFound("Team was not found") : Ok(team);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<TeamResponse>> AddTeam(CreateTeamRequest team)
         {
@@ -32,7 +32,7 @@ namespace f1api.Controllers
             return CreatedAtAction(nameof(GetTeam), new { id = createdTeam.Id }, createdTeam);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("{id}")]
         public async Task<ActionResult> UpdateTeam (int id , UpdateTeamRequest team)
         {
@@ -40,7 +40,7 @@ namespace f1api.Controllers
             return updatedTeam  ? NoContent() : NotFound("TEAM WAS NOT FOUND");
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTeam (int id)
         {
@@ -48,7 +48,7 @@ namespace f1api.Controllers
             return deleted ? NoContent() : NotFound("TEAM WAS NOT FOUND");
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpPut("teams/drivers/")]
         public async Task<ActionResult> TeamDriver(DriverChanges changes)
         {

@@ -10,16 +10,6 @@ namespace f1api.Dtos
 
         public string? WalletAddress { get; set; }
 
-        public string PasswordHash { get; set; }
-
-       
-
-        public DateTime? PasswordChangeDate { get; set; }
-
-        public string RefreshToken { get; set; }
-
-        public UserRole Role { get; set; } = UserRole.User;
-
         public DateTime? CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }

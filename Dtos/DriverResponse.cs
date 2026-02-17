@@ -12,5 +12,6 @@ namespace f1api.Dtos
         public string Team { get; set; }
       
         public string Description { get; set; } = string.Empty;
+        public string ImgUrl { get; set; } 
     }
 }

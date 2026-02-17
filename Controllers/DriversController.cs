@@ -32,7 +32,7 @@ namespace f1api.Controllers
              */
 
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<DriverResponse>> AddDriver(CreateDriverRequest driver)
         {
@@ -40,7 +40,7 @@ namespace f1api.Controllers
             return CreatedAtAction(nameof(GetDriver), new { id = createdDriver.Id }, createdDriver);
 
         }
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpPost("{id}")]
         public async Task<ActionResult> UpdateDriver(int id , UpdateDriverRequest driver)
         {
@@ -48,7 +48,7 @@ namespace f1api.Controllers
             return updatedDriver ? NoContent() : NotFound("Driver was not found");
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDriver(int id)
         {

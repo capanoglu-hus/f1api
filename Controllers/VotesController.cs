@@ -18,12 +18,10 @@ namespace f1api.Controllers
 
             var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-
             _ = Guid.TryParse(userIdString, out Guid Id) ? Id : Guid.Empty;
 
             var result = await service.GetDriverVote(vote, Id);
-            if (!result) 
-                return NotFound();
+           
             return Ok(result);
         }
 
@@ -34,8 +32,7 @@ namespace f1api.Controllers
 
             _ = Guid.TryParse(userIdString, out Guid Id) ? Id : Guid.Empty;
             var result = await service.GetTeamVote(vote, Id);
-            if (!result)
-                return NotFound();
+            
             return Ok(result);
         }
 
@@ -68,5 +65,34 @@ namespace f1api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("DriverVoteBool")]
+        public async Task<IActionResult> DriverVoteBool()
+        {
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            _ = Guid.TryParse(userIdString, out Guid Id) ? Id : Guid.Empty;
+            var result = await service.DriverVoteBool( Id);
+           
+            return Ok(result);
+        }
+
+        [HttpGet("TeamVoteBool")]
+        public async Task<IActionResult> TeamVoteBool()
+        {
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            _ = Guid.TryParse(userIdString, out Guid Id) ? Id : Guid.Empty;
+            var result = await service.TeamVoteBool(Id);
+            
+            return Ok(result);
+        }
+
+        [HttpGet("RacePredictionBool")]
+        public async Task<IActionResult> RacePredictionBool()
+        {
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            _ = Guid.TryParse(userIdString, out Guid Id) ? Id : Guid.Empty;
+            var result = await service.RacePredictionBool(Id);
+
+            return Ok(result);
+        }
     }
 }

@@ -9,11 +9,13 @@ namespace f1api.Services
 
         Task<bool> GetTeamVote(TeamVote vote, Guid guid);
 
-        Task<List<Driver>> BestDrivers();
+        Task<List<BestDrivers>> BestDrivers();
 
-        Task<Team> BestTeams();
+        Task<BestTeam> BestTeams();
 
         Task<bool> RacePrediction(RacePre prediction, Guid guid);
-
+        Task<bool> DriverVoteBool(Guid guid);
+        Task<bool> TeamVoteBool(Guid guid);
+        Task<bool> RacePredictionBool(Guid guid);
     }
 }

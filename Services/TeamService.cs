@@ -45,6 +45,7 @@ namespace f1api.Services
                 Id = c.Id,
                 Name = c.Name,
                 Principal = c.Principal,
+                ImgUrl = c.TeamImageUrl,
                 Drivers = c.Drivers.Select(d => new CreateDriverRequest
                 {
                     Name = d.Name,

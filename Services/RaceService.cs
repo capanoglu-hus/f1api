@@ -10,19 +10,21 @@ namespace f1api.Services
     public class RaceService(AppDbContext context, IServiceScopeFactory _scope) : IRaceService
     {
 
-        public async Task<RaceResponse?> GetRaceById(int id)
+        public async Task<RaceResponse?> GetRaceById()
         {
-            var team = await context.Races
-                .Where(a => a.Id == id)
-                .Select(a => new RaceResponse
-                {
-                    RaceName = a.RaceName,
-                    RaceDate = a.RaceDate,
-                    Winner = a.Winner.Name,
-                    Second = a.Second.Name,
-                    Third = a.Third.Name,
-                }).FirstAsync();
-            return team;
+
+            var race = await context.Races
+                .OrderByDescending(a => a.Id)
+                .FirstOrDefaultAsync();
+              
+            return new RaceResponse
+            {
+                Id = race.Id,
+                RaceName = race.RaceName,
+                RaceDate = race.RaceDate,
+                ImgUrl = race.RaceImageUrl
+
+    };
         }
 
         public async Task<bool> UpdateRaceResult(int id, UpdateRaceRequest updateRace)
@@ -46,7 +48,7 @@ namespace f1api.Services
             var newRace = new Race
             {
                 RaceName = createRace.RaceName,
-                RaceDate = DateTime.UtcNow,
+                RaceDate = createRace.RaceDate,
 
             };
 
@@ -71,6 +73,7 @@ namespace f1api.Services
                 Winner = a.Winner.Name,
                 Second = a.Second.Name,
                 Third = a.Third.Name,
+                ImgUrl = a.RaceImageUrl,
             }).ToListAsync();
 
         public async Task<bool> FinishRace(int id)

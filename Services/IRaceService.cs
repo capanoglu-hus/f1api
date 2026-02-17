@@ -6,7 +6,7 @@ namespace f1api.Services
     {
         Task<List<RaceResponse>> GetAllRacesAsync();
 
-        Task<RaceResponse> GetRaceById(int id);
+        Task<RaceResponse> GetRaceById();
 
         Task<RaceResponse> CreateRace(CreateRaceRequest createRace);
 

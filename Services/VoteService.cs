@@ -117,25 +117,52 @@ namespace f1api.Services
             return true;
         }
 
-        public async Task<List<Driver>> BestDrivers()
+        public async Task<List<BestDrivers>> BestDrivers()
         {
             var bestDrivers = await context.DriverFanRatings
                 .OrderByDescending(r => r.TotalScore)
                 .Take(3)
-                .Include(r => r.Driver)
-                .ToListAsync();
+                .Select(c => new BestDrivers
+                {
+                    DriverName = c.Driver.Name,
+                    RacingNumber = c.Driver.RacingNumber,
+                    TeamName = c.Driver.Team.Name,
+                    Description = c.Driver.Description,
+                    TotalScore = c.TotalScore,
+                    TotalVotes = c.TotalVotes,
+                    RatedDate = c.RatedDate,
 
-            return bestDrivers.Select(r => r.Driver).ToList();
+                }).ToListAsync();
+
+            return bestDrivers;
+
         }
 
-        public async Task<Team> BestTeams()
+        public async Task<BestTeam> BestTeams()
         {
             var team = await context.TeamFanRatings
                 .OrderByDescending(r => r.TotalVotes)
                 .Include(r => r.Team)
                 .FirstOrDefaultAsync();
 
-            return team?.Team;
+            var drivers = context.Drivers.Where(x => x.TeamId == team.TeamId)
+                .Select(d => new CreateDriverRequest
+                {
+                    Name = d.Name,
+                    RacingNumber = d.RacingNumber,
+                    Description = d.Description,
+
+                }).ToList();
+
+            return new BestTeam
+            {
+                TeamId = team.Team.Id,
+                TeamName = team.Team.Name,
+                TeamPrincipal = team.Team.Principal,
+                Drivers = drivers,
+                VoteUpdateDate = team.RatedDate,
+                TotalVotes = team.TotalVotes
+            };
         }
 
         public async Task<bool> RacePrediction(RacePre prediction, Guid guid)
@@ -171,6 +198,33 @@ namespace f1api.Services
 
         }
 
+        public async Task<bool> DriverVoteBool(Guid guid)
+        {
+            var oldvote = await context.UserDriverVotes
+                .AnyAsync(v => v.User.Id == guid);
+            if (oldvote) return false;
+
+            return true;
+        }
+        public async Task<bool> TeamVoteBool(Guid guid)
+        {
+            var oldvote = await context.UserTeamVotes
+                .AnyAsync(v => v.User.Id == guid);
+            if (oldvote) return false;
+
+            return true;
+        }
+        public async Task<bool> RacePredictionBool(Guid guid)
+        {
+            var lastRaceId = await context.Races.OrderByDescending(s => s.Id).FirstOrDefaultAsync();
+            if (lastRaceId == null) return false;
+            var oldPrediction = await context.RacePredictions
+                .AnyAsync(v => v.User.Id == guid && v.RaceId == lastRaceId.Id);
+            if (oldPrediction) return false;
+            return true;
+        }
+
+       
 
     }
 }

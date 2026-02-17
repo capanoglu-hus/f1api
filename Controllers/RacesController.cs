@@ -15,10 +15,10 @@ namespace f1api.Controllers
         public async Task<ActionResult<List<RaceResponse>>> GetAllRaces()
             => Ok(await service.GetAllRacesAsync());
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<RaceResponse>> GetRaceById(int id)
+        [HttpGet("GetLastRaceInfo")]
+        public async Task<ActionResult<RaceResponse>> GetLastRaceInfo()
         {
-            var race = await service.GetRaceById(id);
+            var race = await service.GetRaceById();
             return race is null ? NotFound("Race was not found") : Ok(race);
         }
         //[Authorize(Roles = "Admin")]
@@ -28,7 +28,7 @@ namespace f1api.Controllers
             var createdRace = await service.CreateRace(createRace);
             return createdRace is null ? NotFound("CREATE RACE NOT") :  Ok(createdRace);
         }
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpPost("{id}")]
         public async Task<ActionResult> UpdateRace (int id, UpdateRaceRequest updateRace)
         {
@@ -36,7 +36,7 @@ namespace f1api.Controllers
             return updatedRace ? NoContent() : NotFound("Update not success");
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpPost("finishRace{id}")]
         public async Task<ActionResult> FinishRace(int id)
         {

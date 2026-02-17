@@ -8,8 +8,8 @@
         public int RacingNumber { get; set; }
 
         public int? TeamId { get; set; }
-        public Team Team { get; set; } 
-
+        public Team Team { get; set; }
+        public string? ImageUrl { get; set; }
         public string Description { get; set; } = string.Empty;
     }
 }

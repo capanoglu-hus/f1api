@@ -13,6 +13,7 @@
 
         public int? SecondId { get; set; }
         public Driver? Second { get; set; }
+        public string? RaceImageUrl { get; set; }
 
 
         public int? ThirdId { get; set; }

@@ -38,7 +38,18 @@ builder.Services.AddScoped<f1api.Services.IRaceService, f1api.Services.RaceServi
 builder.Services.AddScoped<f1api.Services.IAuthService, f1api.Services.AuthService>();
 builder.Services.AddScoped<f1api.Services.IVoteService, f1api.Services.VoteService>();
 builder.Services.AddScoped<f1api.Services.ITeamService, f1api.Services.TeamService>();
+builder.Services.AddScoped<f1api.Services.IUserService, f1api.Services.UserService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("F1ProjectPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Vite projenin adresi
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 var app = builder.Build();
+app.UseCors("F1ProjectPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

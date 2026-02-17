@@ -14,5 +14,6 @@ namespace f1api.Dtos
         public string? Second { get; set; }
 
         public string? Third { get; set; }
+        public string? ImgUrl { get; set; }
     }
 }

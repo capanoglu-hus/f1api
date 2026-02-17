@@ -35,20 +35,23 @@ namespace f1api.Services
                 Name = c.Name,
                 Team = c.Team.Name.ToString(),
                 RacingNumber = c.RacingNumber,
-                Description = c.Description
+                Description = c.Description,
+                 ImgUrl = c.ImageUrl
+
             }).ToListAsync();
 
         public async Task<DriverResponse?> GetDriverByIdAsync(int id)
         {
-            var driver =  await context.Drivers
+            var driver = await context.Drivers
                 .Where(a => a.Id == id)
                 .Select(a => new DriverResponse
-                {   
+                {
                     Id = a.Id,
                     Name = a.Name,
                     Team = a.Team.Name.ToString(),
                     RacingNumber = a.RacingNumber,
-                    Description = a.Description
+                    Description = a.Description,
+                    ImgUrl = a.ImageUrl
                 })
                 .FirstOrDefaultAsync();
             return driver;
