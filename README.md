@@ -1,9 +1,14 @@
-# 🏎️ F1 Taraftar & Tahmin API'si (F1 Fan & Prediction API)
+# 🏎️ F1 Taraftar (F1 Fan & Prediction API)
 
-> Formula 1 hayranlarının sürücüleri oylayabildiği, yarış podyumu tahminleri yapabildiği ve doğru tahminler karşılığında NFT ödülleri kazanabildiği kapsamlı bir ASP.NET Core Web API projesi.
+> Bu repo, **ASP.NET Core ile geliştirilmiş**, **JWT tabanlı kimlik doğrulama**, **oylama & tahmin sistemi** ve **blockchain ile NFT ödül entegrasyonu** içeren kapsamlı bir **backend API projesidir**.
 
-Bu proje, bir F1 sezonunu simüle ederek kullanıcıların yarışlarla etkileşime girmesini sağlar. Kimlik doğrulama, gelişmiş veri doğrulama kuralları ve arka plan işlemleri (background tasks) gibi modern backend tekniklerini içerir.
+Proje, Formula 1 sezonu boyunca kullanıcıların:
 
+- favori sürücülerini oylayabildiği,
+- yarışlar için tahminde bulunabildiği,
+- doğru tahmin yapanlara NFT ödülleri verdiği
+
+gerçek dünya seviyesinde bir sistem olarak tasarlanmıştır.
 ## 🚀 Özellikler
 
 ### 🔐 Kimlik Doğrulama ve Güvenlik
