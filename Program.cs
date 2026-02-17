@@ -1,0 +1,68 @@
+using f1api.Data;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)
+                ),
+            ValidateIssuerSigningKey = true
+        };
+    });
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddScoped<f1api.Services.IDriverService, f1api.Services.DriverService>();
+builder.Services.AddScoped<f1api.Services.IRaceService, f1api.Services.RaceService>();
+builder.Services.AddScoped<f1api.Services.IAuthService, f1api.Services.AuthService>();
+builder.Services.AddScoped<f1api.Services.IVoteService, f1api.Services.VoteService>();
+builder.Services.AddScoped<f1api.Services.ITeamService, f1api.Services.TeamService>();
+builder.Services.AddScoped<f1api.Services.IUserService, f1api.Services.UserService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("F1ProjectPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // Vite projenin adresi
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+var app = builder.Build();
+app.UseCors("F1ProjectPolicy");
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapControllers();
+
+app.Run();
