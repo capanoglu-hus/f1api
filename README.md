@@ -46,31 +46,7 @@ Proje, sorumlulukların ayrılması (SoC) ilkesine dayanan **Clean Architecture*
 * **Repositories/Data:** Veritabanı işlemlerini yönetir.
 * **DTOs:** Veri transferi için kullanılan modellerdir, veritabanı varlıklarını (Entity) dış dünyadan gizler.
 
-## ⚡ Kurulum ve Başlangıç
 
-1.  **Projeyi Klonlayın**
-    ```bash
-    git clone [https://github.com/capanoglu-hus/f1api.git](https://github.com/capanoglu-hus/f1api.git)
-    ```
-
-2.  **Veritabanı Ayarları**
-    `appsettings.json` dosyasındaki "DefaultConnection" alanına kendi SQL Server bağlantı cümlenizi yazın.
-    ```json
-    "ConnectionStrings": {
-      "DefaultConnection": "Server=...;Database=F1ApiDb;..."
-    }
-    ```
-
-3.  **Migration İşlemleri**
-    Veritabanını oluşturmak için terminalde şu komutu çalıştırın:
-    ```bash
-    dotnet ef database update
-    ```
-
-4.  **Projeyi Ayağa Kaldırın**
-    ```bash
-    dotnet run
-    ```
 
 ## 🔌 Önemli API Uçları (Endpoints)
 
@@ -87,6 +63,6 @@ Proje, sorumlulukların ayrılması (SoC) ilkesine dayanan **Clean Architecture*
 - [x] Oylama ve Tahmin Mantığı (Validasyonlar Dahil)
 - [x] JWT ve Refresh Token Entegrasyonu
 - [x] Kazanan Hesaplama Algoritması
-- [ ] **Frontend Entegrasyonu (React + TypeScript + Vite)** *[Geliştiriliyor]*
-- [ ] Web3 / Akıllı Sözleşme Entegrasyonu (Gerçek NFT Mintleme)
+- [x] **Frontend Entegrasyonu (React + TypeScript + Vite)** 
+- [ ] Web3 / Akıllı Sözleşme Entegrasyonu (Gerçek NFT Mintleme) *[Geliştiriliyor]*
 
